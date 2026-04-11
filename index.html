@@ -8,103 +8,113 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        /* Estilo base inspirado no Telegram Dark Mode */
+        /* Fundo e tipografia exatos do design premium */
         body {
-            background-color: #0f1419; /* Fundo escuro */
+            background-color: #0e141a; 
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
-            transition: opacity 0.3s ease; /* Transição suave ao fechar */
+            transition: opacity 0.3s ease;
         }
         
-        .input-bg { background-color: #1c242d; }
-        .input-border { border: 1px solid #2d3744; }
+        /* Cores dos inputs */
+        .input-bg { background-color: #1a222c; }
+        .input-border { border: 1px solid #273340; }
         .input-border:focus-within { border-color: #00c070; }
         
+        /* Botão principal */
         .btn-green { background-color: #00c070; }
         .btn-green:hover { background-color: #00a862; }
+        
+        /* O estado disabled exatamente como na sua imagem (cinza escuro) */
         .btn-green:disabled { 
-            background-color: #2d3744; 
-            color: #6b7280;
+            background-color: #2b3644; 
+            color: #6c7e93;
             cursor: not-allowed;
             transform: none !important;
         }
+
+        /* Input autofill fix para navegadores webkit */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #1a222c inset !important;
+            -webkit-text-fill-color: white !important;
+        }
         
-        /* Ocultar scrollbar mas manter funcionalidade */
         ::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="flex items-center justify-center min-h-screen p-6">
 
-    <div id="app-container" class="w-full max-w-md w-full relative overflow-hidden">
+    <div id="app-container" class="w-full max-w-sm relative overflow-hidden mt-8">
         
         <div id="form-screen" class="flex flex-col items-center w-full transition-opacity duration-300">
             
-            <div class="flex items-center gap-2 bg-[#1c242d] border border-[#2d3744] rounded-full px-4 py-1.5 mb-6 text-sm text-[#00c070]">
-                <div class="w-2 h-2 rounded-full bg-[#00c070]"></div>
+            <div class="flex items-center gap-2 bg-[#121c22] border border-[#1a2d2d] rounded-full px-4 py-1.5 mb-6 text-sm font-medium text-[#00c070]">
+                <div class="w-1.5 h-1.5 rounded-full bg-[#00c070]"></div>
                 Último passo
             </div>
 
-            <div class="bg-[#1c242d] p-4 rounded-2xl mb-6 flex items-center justify-center shadow-lg border border-[#2d3744]">
-                <i class="ph ph-shield-check text-4xl text-[#00c070]"></i>
+            <div class="bg-[#17212b] w-16 h-16 rounded-2xl mb-6 flex items-center justify-center shadow-lg border border-[#212f3c]">
+                <i class="ph ph-shield-check text-3xl text-[#00c070]"></i>
             </div>
 
-            <h1 class="text-2xl font-bold mb-2 text-center">Garanta seu Acesso</h1>
-            <p class="text-[#8e96a1] text-center text-sm mb-8 px-4">
+            <h1 class="text-[22px] font-bold mb-2 text-center text-white">Garanta seu Acesso</h1>
+            <p class="text-[#8090a2] text-center text-[13px] leading-relaxed mb-8 px-2">
                 Informe seus dados para liberar o conteúdo e receber atualizações exclusivas
             </p>
 
-            <form id="access-form" class="w-full flex flex-col gap-5">
+            <form id="access-form" class="w-full flex flex-col gap-4">
                 
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium flex items-center gap-2">
-                        <i class="ph ph-envelope-simple text-[#8e96a1] text-lg"></i> Seu melhor email <span class="text-red-500">*</span>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
+                        <i class="ph ph-envelope-simple text-[#8090a2] text-base"></i> Seu melhor email <span class="text-red-500">*</span>
                     </label>
-                    <input type="email" id="email" placeholder="seu@email.com" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-white placeholder-[#5a6470] outline-none transition-colors" required>
+                    <input type="email" id="email" placeholder="seu@email.com" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <label class="text-sm font-medium flex items-center gap-2">
-                        <i class="ph ph-phone text-[#8e96a1] text-lg"></i> Telefone <span class="text-red-500">*</span>
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
+                        <i class="ph ph-phone text-[#8090a2] text-base"></i> Telefone <span class="text-red-500">*</span>
                     </label>
-                    <input type="tel" id="phone" placeholder="(11) 99999-9999" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-white placeholder-[#5a6470] outline-none transition-colors" required>
+                    <input type="tel" id="phone" placeholder="(11) 99999-9999" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
                 </div>
 
-                <div class="flex flex-col gap-2 mb-4">
-                    <label class="text-sm font-medium flex items-center gap-2">
-                        <i class="ph ph-calendar-blank text-[#8e96a1] text-lg"></i> Data de nascimento <span class="text-red-500">*</span>
+                <div class="flex flex-col gap-1.5 mb-2">
+                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
+                        <i class="ph ph-calendar-blank text-[#8090a2] text-base"></i> Data de nascimento <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" id="dob" placeholder="DD/MM/AAAA" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-white placeholder-[#5a6470] outline-none transition-colors" required>
+                    <input type="text" id="dob" placeholder="DD/MM/AAAA" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
                 </div>
 
-                <button type="button" id="submit-btn" disabled class="w-full btn-green text-white font-bold rounded-xl py-4 flex items-center justify-center gap-2 transition-all active:scale-95 shadow-lg">
+                <button type="button" id="submit-btn" disabled class="w-full btn-green font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
                     Liberar Acesso <i class="ph ph-arrow-right text-lg"></i>
                 </button>
             </form>
         </div>
 
-        <div id="success-screen" class="hidden flex-col items-center justify-center w-full min-h-[60vh] transition-opacity duration-300">
-            <div class="bg-[#00c070] p-5 rounded-full mb-6 shadow-[0_0_30px_rgba(0,192,112,0.3)]">
-                <i class="ph-bold ph-check text-4xl text-white"></i>
+        <div id="success-screen" class="hidden flex-col items-center w-full min-h-[50vh] transition-opacity duration-300 pt-10">
+            
+            <div class="w-full bg-[#00c070] h-20 rounded-[28px] mb-8 flex items-center justify-start px-8 shadow-[0_4px_25px_rgba(0,192,112,0.15)] relative overflow-hidden">
+                <i class="ph-bold ph-check text-3xl text-white"></i>
             </div>
             
-            <h1 class="text-2xl font-bold mb-3 text-center">Acesso Liberado!</h1>
-            <p class="text-[#8e96a1] text-center mb-10">Seu conteúdo está sendo enviado...</p>
+            <h1 class="text-[22px] font-bold mb-2 text-center text-white">Acesso Liberado!</h1>
+            <p class="text-[#8090a2] text-sm text-center mb-10">Seu conteúdo está sendo enviado...</p>
 
-            <button id="close-btn" class="flex items-center gap-2 bg-[#1c242d] border border-[#2d3744] hover:bg-[#2d3744] transition-colors text-white px-6 py-2.5 rounded-xl font-medium">
-                <i class="ph ph-x"></i> Fechar (<span id="timer">5</span>)
+            <button id="close-btn" class="flex items-center gap-2 bg-[#1a222c] border border-[#273340] hover:bg-[#273340] transition-colors text-white px-5 py-2.5 rounded-lg text-sm font-semibold self-start">
+                <i class="ph ph-x"></i> Fechar ( <span id="timer">5</span> )
             </button>
         </div>
 
     </div>
 
     <script>
-        // Inicializa o Telegram Web App
         const tg = window.Telegram.WebApp;
-        // Informa ao Telegram que o app está pronto
         tg.ready();
 
-        // Elementos do DOM
         const formScreen = document.getElementById('form-screen');
         const successScreen = document.getElementById('success-screen');
         const emailInput = document.getElementById('email');
@@ -114,14 +124,13 @@
         const closeBtn = document.getElementById('close-btn');
         const timerDisplay = document.getElementById('timer');
 
-        // Máscara e Validação de Telefone
+        // Máscaras e Validações
         phoneInput.addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
             checkFormValidity();
         });
 
-        // Máscara e Validação de Data de Nascimento
         dobInput.addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
@@ -130,45 +139,39 @@
 
         emailInput.addEventListener('input', checkFormValidity);
 
-        // Função que verifica se todos os campos estão corretos
         function checkFormValidity() {
             const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
             const phoneValid = phoneInput.value.replace(/\D/g, '').length === 11;
-            
-            // Validação básica de data (tamanho)
             const dobDigits = dobInput.value.replace(/\D/g, '');
             const dobValid = dobDigits.length === 8;
 
-            // Se tudo estiver válido, habilita o botão
             if (emailValid && phoneValid && dobValid) {
                 submitBtn.disabled = false;
+                submitBtn.classList.remove('text-[#6c7e93]');
+                submitBtn.classList.add('text-white');
             } else {
                 submitBtn.disabled = true;
+                submitBtn.classList.add('text-[#6c7e93]');
+                submitBtn.classList.remove('text-white');
             }
         }
 
-        // Ação do Botão "Liberar Acesso"
+        // Troca de Telas
         submitBtn.addEventListener('click', function() {
-            // Aqui você faria o envio dos dados (fetch/ajax) para o seu servidor
-            // ...
-
-            // Animação de transição
             formScreen.classList.add('opacity-0');
             
             setTimeout(() => {
                 formScreen.classList.add('hidden');
                 successScreen.classList.remove('hidden');
                 
-                // Força um pequeno atraso para a animação de fade-in da tela 2
                 setTimeout(() => {
                     successScreen.classList.add('opacity-100');
                     iniciarContagem();
                 }, 50);
-                
             }, 300);
         });
 
-        // Lógica de Contagem Regressiva e Fechamento do App
+        // Fechamento
         let countdown = 5;
         function iniciarContagem() {
             const interval = setInterval(() => {
@@ -181,23 +184,18 @@
                 }
             }, 1000);
 
-            // Se o usuário clicar no botão "Fechar" antes do tempo
             closeBtn.addEventListener('click', () => {
                 clearInterval(interval);
                 fecharMiniApp();
             });
         }
 
-        // Função para fechar o Telegram Mini App
         function fecharMiniApp() {
-            document.body.style.opacity = '0'; // Faz um fade out na tela inteira
-            
+            document.body.style.opacity = '0'; 
             setTimeout(() => {
-                // Tenta fechar usando a API oficial do Telegram
-                if (tg) {
+                if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                     tg.close();
                 } else {
-                    // Fallback para caso esteja testando no navegador fora do Telegram
                     console.log("Fechando app...");
                     window.close();
                 }
