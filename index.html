@@ -2,118 +2,220 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Garantir Acesso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Inscrição Exclusiva</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        /* Fundo e tipografia exatos do design premium */
-        body {
-            background-color: #0e141a; 
-            color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
-            transition: opacity 0.3s ease;
-        }
-        
-        /* Cores dos inputs */
-        .input-bg { background-color: #1a222c; }
-        .input-border { border: 1px solid #273340; }
-        .input-border:focus-within { border-color: #00c070; }
-        
-        /* Botão principal */
-        .btn-green { background-color: #00c070; }
-        .btn-green:hover { background-color: #00a862; }
-        
-        /* O estado disabled exatamente como na sua imagem (cinza escuro) */
-        .btn-green:disabled { 
-            background-color: #2b3644; 
-            color: #6c7e93;
-            cursor: not-allowed;
-            transform: none !important;
+        :root {
+            --bg-color: #000000;
+            --surface-color: #1c242d;
+            --border-color: #2d3744;
+            --primary-green: #00c070;
+            --text-main: #ffffff;
+            --text-muted: #8e96a1;
         }
 
-        /* Input autofill fix para navegadores webkit */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #1a222c inset !important;
-            -webkit-text-fill-color: white !important;
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overscroll-behavior-y: none; /* Evita o 'bounce' no mobile */
+        }
+
+        /* Estilo Nativo de Lista Agrupada */
+        .native-group {
+            background-color: var(--surface-color);
+            border-radius: 16px;
+            overflow: hidden;
         }
         
-        ::-webkit-scrollbar { display: none; }
+        .native-input-row {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 0.5px solid var(--border-color);
+            position: relative;
+        }
+        .native-input-row:last-child { border-bottom: none; }
+        
+        .native-icon {
+            width: 24px;
+            color: var(--text-muted);
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        .native-input-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .native-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            letter-spacing: 0.5px;
+        }
+
+        .native-input {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+            padding: 0;
+        }
+        .native-input::placeholder { color: #4e5d6d; }
+
+        /* Foco dinâmico no ícone */
+        .native-input-row:focus-within .native-icon { color: var(--primary-green); }
+
+        /* Botão Premium */
+        .btn-sticky-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px 20px 32px 20px; /* Padding extra para iPhone com Notch/Barra */
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 30%, #000000 100%);
+            z-index: 50;
+        }
+
+        .btn-premium {
+            width: 100%;
+            background-color: var(--primary-green);
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            padding: 16px;
+            border-radius: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-premium:not(:disabled) {
+            box-shadow: 0 4px 24px rgba(0, 192, 112, 0.3);
+        }
+
+        .btn-premium:not(:disabled):active { transform: scale(0.97); }
+
+        .btn-premium:disabled {
+            background-color: #232e3a;
+            color: #5a6b7d;
+            cursor: not-allowed;
+        }
+
+        /* Correção de Autofill Safado do Webkit */
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0 30px var(--surface-color) inset !important;
+            -webkit-text-fill-color: white !important;
+            border-radius: 0;
+        }
+
+        /* Animação Sucesso */
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
+<body class="flex flex-col min-h-screen">
 
-    <div id="app-container" class="w-full max-w-sm relative overflow-hidden mt-8">
+    <div id="app-container" class="w-full max-w-md mx-auto relative flex flex-col min-h-screen">
         
-        <div id="form-screen" class="flex flex-col items-center w-full transition-opacity duration-300">
+        <div id="form-screen" class="flex flex-col w-full flex-1 transition-opacity duration-300 pb-32">
             
-            <div class="flex items-center gap-2 bg-[#121c22] border border-[#1a2d2d] rounded-full px-4 py-1.5 mb-6 text-sm font-medium text-[#00c070]">
-                <div class="w-1.5 h-1.5 rounded-full bg-[#00c070]"></div>
-                Último passo
+            <div class="px-6 pt-10 pb-6 flex flex-col items-center text-center">
+                <div class="w-14 h-14 bg-gradient-to-br from-[#1c242d] to-[#12181e] border border-[#2d3744] rounded-2xl flex items-center justify-center shadow-lg mb-5 relative">
+                    <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#00c070] border-2 border-black rounded-full"></div>
+                    <i class="ph-fill ph-lock-key text-2xl text-white"></i>
+                </div>
+                <h1 class="text-2xl font-bold mb-2 tracking-tight">Acesso Exclusivo</h1>
+                <p class="text-[15px] text-[#8e96a1] leading-relaxed">
+                    Complete seu cadastro abaixo para liberar o conteúdo instantaneamente.
+                </p>
             </div>
 
-            <div class="bg-[#17212b] w-16 h-16 rounded-2xl mb-6 flex items-center justify-center shadow-lg border border-[#212f3c]">
-                <i class="ph ph-shield-check text-3xl text-[#00c070]"></i>
-            </div>
+            <form id="access-form" class="px-4 w-full">
+                <div class="native-group shadow-md">
+                    
+                    <div class="native-input-row">
+                        <i class="ph ph-envelope-simple native-icon transition-colors"></i>
+                        <div class="native-input-container">
+                            <label class="native-label">E-mail de acesso <span class="text-red-500">*</span></label>
+                            <input type="email" id="email" placeholder="seu@email.com" class="native-input" required autocomplete="email">
+                        </div>
+                    </div>
 
-            <h1 class="text-[22px] font-bold mb-2 text-center text-white">Garanta seu Acesso</h1>
-            <p class="text-[#8090a2] text-center text-[13px] leading-relaxed mb-8 px-2">
-                Informe seus dados para liberar o conteúdo e receber atualizações exclusivas
-            </p>
+                    <div class="native-input-row">
+                        <i class="ph ph-device-mobile native-icon transition-colors"></i>
+                        <div class="native-input-container">
+                            <label class="native-label">Celular com DDD <span class="text-red-500">*</span></label>
+                            <input type="tel" id="phone" placeholder="(11) 99999-9999" class="native-input" required>
+                        </div>
+                    </div>
 
-            <form id="access-form" class="w-full flex flex-col gap-4">
-                
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
-                        <i class="ph ph-envelope-simple text-[#8090a2] text-base"></i> Seu melhor email <span class="text-red-500">*</span>
-                    </label>
-                    <input type="email" id="email" placeholder="seu@email.com" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
+                    <div class="native-input-row">
+                        <i class="ph ph-calendar-blank native-icon transition-colors"></i>
+                        <div class="native-input-container">
+                            <label class="native-label">Data de nascimento <span class="text-red-500">*</span></label>
+                            <input type="text" id="dob" placeholder="DD/MM/AAAA" class="native-input" required>
+                        </div>
+                    </div>
+
                 </div>
-
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
-                        <i class="ph ph-phone text-[#8090a2] text-base"></i> Telefone <span class="text-red-500">*</span>
-                    </label>
-                    <input type="tel" id="phone" placeholder="(11) 99999-9999" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
-                </div>
-
-                <div class="flex flex-col gap-1.5 mb-2">
-                    <label class="text-[13px] font-semibold flex items-center gap-2 text-white">
-                        <i class="ph ph-calendar-blank text-[#8090a2] text-base"></i> Data de nascimento <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" id="dob" placeholder="DD/MM/AAAA" class="w-full input-bg input-border rounded-xl px-4 py-3.5 text-sm text-white placeholder-[#4e5d6d] outline-none transition-colors" required>
-                </div>
-
-                <button type="button" id="submit-btn" disabled class="w-full btn-green font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
-                    Liberar Acesso <i class="ph ph-arrow-right text-lg"></i>
-                </button>
             </form>
+
+            <div class="btn-sticky-container">
+                <button type="button" id="submit-btn" disabled class="btn-premium">
+                    Liberar Meu Acesso <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
         </div>
 
-        <div id="success-screen" class="hidden flex-col items-center w-full min-h-[50vh] transition-opacity duration-300 pt-10">
+        <div id="success-screen" class="hidden flex-col items-center justify-center w-full flex-1 transition-opacity duration-300 px-6 absolute inset-0 z-50 bg-black">
             
-            <div class="w-full bg-[#00c070] h-20 rounded-[28px] mb-8 flex items-center justify-start px-8 shadow-[0_4px_25px_rgba(0,192,112,0.15)] relative overflow-hidden">
-                <i class="ph-bold ph-check text-3xl text-white"></i>
+            <div class="w-24 h-24 bg-[#00c070]/10 rounded-full flex items-center justify-center mb-6 animate-pop">
+                <div class="w-16 h-16 bg-[#00c070] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(0,192,112,0.4)]">
+                    <i class="ph-bold ph-check text-3xl text-white"></i>
+                </div>
             </div>
             
-            <h1 class="text-[22px] font-bold mb-2 text-center text-white">Acesso Liberado!</h1>
-            <p class="text-[#8090a2] text-sm text-center mb-10">Seu conteúdo está sendo enviado...</p>
+            <h1 class="text-2xl font-bold mb-3 text-center text-white">Tudo Pronto!</h1>
+            <p class="text-[#8e96a1] text-[15px] text-center mb-10">
+                Seu acesso foi verificado. Você já pode retornar para a conversa.
+            </p>
 
-            <button id="close-btn" class="flex items-center gap-2 bg-[#1a222c] border border-[#273340] hover:bg-[#273340] transition-colors text-white px-5 py-2.5 rounded-lg text-sm font-semibold self-start">
-                <i class="ph ph-x"></i> Fechar ( <span id="timer">5</span> )
+            <button id="close-btn" class="flex items-center justify-center gap-2 bg-[#1c242d] hover:bg-[#2d3744] text-white px-6 py-3.5 rounded-xl text-[15px] font-semibold transition-colors w-full max-w-[200px]">
+                Fechar App <span id="timer" class="text-[#8e96a1] ml-1">(5)</span>
             </button>
         </div>
 
     </div>
 
     <script>
+        // Inicializa API do Telegram
         const tg = window.Telegram.WebApp;
         tg.ready();
+        
+        // FORÇA O APP A ABRIR EM TELA CHEIA (Essencial para visual premium)
+        tg.expand();
+        // Define a cor do header do app no Telegram para bater com o fundo
+        tg.setHeaderColor('#000000');
+        tg.setBackgroundColor('#000000');
 
         const formScreen = document.getElementById('form-screen');
         const successScreen = document.getElementById('success-screen');
@@ -147,22 +249,22 @@
 
             if (emailValid && phoneValid && dobValid) {
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('text-[#6c7e93]');
-                submitBtn.classList.add('text-white');
             } else {
                 submitBtn.disabled = true;
-                submitBtn.classList.add('text-[#6c7e93]');
-                submitBtn.classList.remove('text-white');
             }
         }
 
-        // Troca de Telas
+        // Transição de Telas
         submitBtn.addEventListener('click', function() {
+            // Oculta container do botão sticky para não atrapalhar a tela de sucesso
+            document.querySelector('.btn-sticky-container').style.display = 'none';
+            
             formScreen.classList.add('opacity-0');
             
             setTimeout(() => {
                 formScreen.classList.add('hidden');
                 successScreen.classList.remove('hidden');
+                successScreen.classList.add('flex');
                 
                 setTimeout(() => {
                     successScreen.classList.add('opacity-100');
@@ -171,12 +273,12 @@
             }, 300);
         });
 
-        // Fechamento
+        // Fechamento e Contagem
         let countdown = 5;
         function iniciarContagem() {
             const interval = setInterval(() => {
                 countdown--;
-                timerDisplay.innerText = countdown;
+                timerDisplay.innerText = `(${countdown})`;
                 
                 if (countdown <= 0) {
                     clearInterval(interval);
@@ -196,7 +298,6 @@
                 if (tg && tg.initDataUnsafe && Object.keys(tg.initDataUnsafe).length > 0) {
                     tg.close();
                 } else {
-                    console.log("Fechando app...");
                     window.close();
                 }
             }, 300); 
