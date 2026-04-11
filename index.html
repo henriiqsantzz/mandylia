@@ -8,13 +8,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            background-color: #09090b; /* Fundo bem escuro para o bg-white/5 aparecer bem */
+            background-color: #09090b;
             color: #ffffff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Fix para o preenchimento automático (autofill) não estragar o fundo do input */
+        /* Fix para o preenchimento automático não estragar o fundo */
         input:-webkit-autofill,
         input:-webkit-autofill:hover, 
         input:-webkit-autofill:focus, 
@@ -33,15 +33,15 @@
             <div class="flex-1 flex flex-col p-5">
                 
                 <div class="flex justify-center mb-6">
-                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/10 border border-sky-500/20 rounded-full">
-                        <div class="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
-                        <span class="text-sky-400 text-sm font-medium">Último passo</span>
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full">
+                        <div class="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                        <span class="text-blue-400 text-sm font-medium">Último passo</span>
                     </div>
                 </div>
                 
                 <div class="text-center mb-6">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky-500/20 to-sky-600/20 rounded-2xl flex items-center justify-center border border-white/5">
-                        <svg class="w-8 h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500/20 to-blue-600/20 rounded-2xl flex items-center justify-center border border-white/5">
+                        <svg class="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                     </div>
                     <h1 class="text-xl font-bold text-white mb-2">Garanta seu Acesso</h1>
                     <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">Informe seus dados para liberar o conteúdo e receber atualizações exclusivas</p>
@@ -55,7 +55,7 @@
                             Seu melhor email<span class="text-red-400">*</span>
                         </label>
                         <div class="relative rounded-xl transition-all duration-200">
-                            <input id="email" required placeholder="seu@email.com" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="email" type="email">
+                            <input id="email" required placeholder="seu@email.com" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-blue-500/50 transition-all" autocomplete="email" type="email">
                         </div>
                     </div>
                     
@@ -65,7 +65,7 @@
                             Telefone<span class="text-red-400">*</span>
                         </label>
                         <div class="relative rounded-xl transition-all duration-200">
-                            <input id="phone" required placeholder="(11) 99999-9999" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="tel" type="tel">
+                            <input id="phone" required placeholder="(11) 99999-9999" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-blue-500/50 transition-all" autocomplete="tel" type="tel">
                         </div>
                     </div>
                     
@@ -75,12 +75,12 @@
                             Data de nascimento<span class="text-red-400">*</span>
                         </label>
                         <div class="relative rounded-xl transition-all duration-200">
-                            <input id="dob" required inputmode="numeric" placeholder="DD/MM/AAAA" maxlength="10" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="bday" type="text">
+                            <input id="dob" required inputmode="numeric" placeholder="DD/MM/AAAA" maxlength="10" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-blue-500/50 transition-all" autocomplete="bday" type="text">
                         </div>
                     </div>
                     
                     <div class="mt-auto pt-4 pb-6">
-                        <button id="submit-btn" type="button" disabled class="w-full py-4 font-semibold rounded-xl flex items-center justify-center gap-2 transition-all duration-200 disabled:from-[#1f2937] disabled:to-[#1f2937] disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:transform-none bg-gradient-to-r from-sky-500 to-sky-600 text-white hover:from-sky-600 hover:to-sky-700 shadow-lg shadow-sky-500/20 active:scale-[0.98] cursor-pointer">
+                        <button id="submit-btn" type="button" disabled class="w-full py-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 shadow-lg shadow-blue-500/20 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 flex items-center justify-center gap-2">
                             <span>Liberar Acesso</span>
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
                         </button>
@@ -96,7 +96,7 @@
 
         <div id="success-screen" class="hidden flex-col items-center justify-center w-full min-h-[60vh] transition-opacity duration-300 px-5 absolute inset-0 z-50">
             
-            <div class="w-20 h-20 bg-sky-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(14,165,233,0.3)]">
+            <div class="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(59,130,246,0.3)]">
                 <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
             </div>
             
@@ -129,12 +129,14 @@
         const closeBtn = document.getElementById('close-btn');
         const timerDisplay = document.getElementById('timer');
 
+        // Máscara Telefone
         phoneInput.addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
             checkFormValidity();
         });
 
+        // Máscara Data
         dobInput.addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,2})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : x[1] + '/' + x[2] + (x[3] ? '/' + x[3] : '');
@@ -156,6 +158,7 @@
             }
         }
 
+        // Animação para a tela de Sucesso
         submitBtn.addEventListener('click', function() {
             formScreen.classList.add('opacity-0');
             
@@ -171,6 +174,7 @@
             }, 300);
         });
 
+        // Contagem e Fechamento
         let countdown = 5;
         function iniciarContagem() {
             const interval = setInterval(() => {
