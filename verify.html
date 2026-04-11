@@ -29,49 +29,59 @@
             overflow: hidden;
         }
 
-        /* Container Principal */
         .verification-card {
             background: #ffffff;
             width: 90%;
             max-width: 380px;
-            padding: 30px 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 40px 25px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             text-align: center;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s ease;
         }
 
         .logo-main {
-            width: 80px;
+            width: 70px;
             margin-bottom: 20px;
         }
 
         h2 {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 500;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--tg-text);
         }
 
         p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--tg-gray);
-            line-height: 1.4;
-            margin-bottom: 30px;
+            line-height: 1.5;
+            margin-bottom: 35px;
         }
 
-        /* Estilo do Slider */
+        /* Container do Slider */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 60px;
+            height: 64px;
             background: #F1F1F3;
-            border-radius: 30px;
+            border-radius: 32px;
             display: flex;
             align-items: center;
-            padding: 5px;
+            padding: 4px;
             user-select: none;
-            overflow: hidden;
+            overflow: hidden; /* Garante que o preenchimento não saia da borda */
+        }
+
+        /* Camada de Preenchimento Azul */
+        .slider-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--tg-blue);
+            transition: width 0.05s linear;
         }
 
         .slider-text {
@@ -80,43 +90,41 @@
             text-align: center;
             left: 0;
             font-size: 14px;
+            font-weight: 500;
             color: var(--tg-gray);
             pointer-events: none;
-            z-index: 1;
+            z-index: 3;
         }
 
+        /* A Bolinha (Logo do Telegram) */
         .slider-handle {
             position: relative;
-            z-index: 2;
-            width: 50px;
-            height: 50px;
-            background: var(--tg-blue);
+            z-index: 4;
+            width: 56px;
+            height: 56px;
+            background: #ffffff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 3px 8px rgba(36, 161, 222, 0.3);
-            transition: transform 0.1s ease;
+            cursor: grab;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transition: transform 0.05s linear;
+        }
+
+        .slider-handle:active {
+            cursor: grabbing;
         }
 
         .slider-handle img {
-            width: 24px;
-            height: 24px;
-            filter: brightness(0) invert(1);
+            width: 34px;
+            height: 34px;
         }
 
-        /* Tela de Sucesso (Oculta Inicialmente) */
-        .success-content {
-            display: none;
-        }
-
-        .gift-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            display: block;
-        }
-
+        /* Sucesso */
+        .success-content { display: none; }
+        .gift-icon { font-size: 60px; margin-bottom: 20px; display: block; }
+        
         .loading-dots:after {
             content: ' .';
             animation: dots 1.5s steps(5, end) infinite;
@@ -135,56 +143,66 @@
     <div class="verification-card" id="card">
         <div id="step-verify">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" class="logo-main">
-            <h2>Verificação de Segurança</h2>
-            <p>Para continuar e acessar o conteúdo, por favor confirme que você é um humano.</p>
+            <h2>Verificação</h2>
+            <p>Arraste o ícone para confirmar que você não é um robô e resgatar seu prêmio.</p>
             
             <div class="slider-container" id="sliderContainer">
-                <div class="slider-text">Arraste para verificar</div>
+                <div class="slider-fill" id="sliderFill"></div>
+                <div class="slider-text" id="sliderText">Arraste para a direita</div>
                 <div class="slider-handle" id="sliderHandle">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="TG">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Logo">
                 </div>
             </div>
         </div>
 
         <div id="step-gift" class="success-content">
             <span class="gift-icon">🎁</span>
-            <h2>Você recebeu um presente!</h2>
-            <p>Sua conta foi verificada com sucesso. Estamos preparando sua recompensa exclusiva...</p>
-            <p style="color: var(--tg-blue); font-weight: 500;" class="loading-dots">Redirecionando para o Bot</p>
+            <h2>Parabéns!</h2>
+            <p>Verificação concluída. Seu presente está sendo liberado no nosso canal oficial...</p>
+            <p style="color: var(--tg-blue); font-weight: 500;" class="loading-dots">Abrindo Telegram</p>
         </div>
     </div>
 
     <script>
         const handle = document.getElementById('sliderHandle');
         const container = document.getElementById('sliderContainer');
-        const card = document.getElementById('card');
+        const fill = document.getElementById('sliderFill');
+        const text = document.getElementById('sliderText');
         const stepVerify = document.getElementById('step-verify');
         const stepGift = document.getElementById('step-gift');
 
         let isDragging = false;
         let startX = 0;
-        let maxDrag = container.offsetWidth - handle.offsetWidth - 10;
-
-        // Configurações do seu Bot
         const SEU_BOT_LINK = "https://t.me/SEU_BOT_AQUI"; 
+
+        function getClientX(e) {
+            return e.touches ? e.touches[0].clientX : e.clientX;
+        }
 
         function startDrag(e) {
             isDragging = true;
-            startX = (e.type === 'mousedown') ? e.pageX : e.touches[0].pageX;
+            startX = getClientX(e) - (parseInt(handle.style.transform.replace('translateX(', '')) || 0);
+            handle.style.transition = 'none';
+            fill.style.transition = 'none';
         }
 
         function onDrag(e) {
             if (!isDragging) return;
             
-            let currentX = (e.type === 'mousemove') ? e.pageX : e.touches[0].pageX;
+            const currentX = getClientX(e);
             let moveX = currentX - startX;
+            const maxDrag = container.offsetWidth - handle.offsetWidth - 8;
 
             if (moveX < 0) moveX = 0;
             if (moveX > maxDrag) moveX = maxDrag;
 
             handle.style.transform = `translateX(${moveX}px)`;
+            
+            // Lógica do Preenchimento e Texto
+            const percentage = (moveX / maxDrag) * 100;
+            fill.style.width = `calc(${percentage}% + 30px)`; // +30px para cobrir atrás da bola
+            text.style.opacity = 1 - (percentage / 50); // Texto some na metade do caminho
 
-            // Se chegar no fim
             if (moveX >= maxDrag) {
                 isDragging = false;
                 completeVerification();
@@ -194,29 +212,31 @@
         function stopDrag() {
             if (!isDragging) return;
             isDragging = false;
-            handle.style.transition = 'transform 0.3s ease';
+            
+            // Volta ao início se não completou
+            handle.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            fill.style.transition = 'width 0.4s ease';
             handle.style.transform = 'translateX(0px)';
-            setTimeout(() => { handle.style.transition = ''; }, 300);
+            fill.style.width = '0%';
+            text.style.opacity = 1;
         }
 
         function completeVerification() {
-            // Transição suave entre as telas
-            stepVerify.style.display = 'none';
-            stepGift.style.display = 'block';
-            card.style.borderColor = '#24A1DE';
-            
-            // Redirecionamento após 5 segundos
+            stepVerify.style.opacity = '0';
             setTimeout(() => {
-                window.location.href = SEU_BOT_LINK;
-            }, 5000);
+                stepVerify.style.display = 'none';
+                stepGift.style.display = 'block';
+                // Redireciona após 5 segundos
+                setTimeout(() => {
+                    window.location.href = SEU_BOT_LINK;
+                }, 5000);
+            }, 400);
         }
 
-        // Eventos Mouse
         handle.addEventListener('mousedown', startDrag);
         window.addEventListener('mousemove', onDrag);
         window.addEventListener('mouseup', stopDrag);
 
-        // Eventos Touch (Mobile)
         handle.addEventListener('touchstart', startDrag);
         window.addEventListener('touchmove', onDrag);
         window.addEventListener('touchend', stopDrag);
