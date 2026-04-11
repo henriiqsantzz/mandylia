@@ -3,219 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Inscrição Exclusiva</title>
+    <title>Garantir Acesso</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
-        :root {
-            --bg-color: #000000;
-            --surface-color: #1c242d;
-            --border-color: #2d3744;
-            --primary-green: #00c070;
-            --text-main: #ffffff;
-            --text-muted: #8e96a1;
-        }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #09090b; /* Fundo bem escuro para o bg-white/5 aparecer bem */
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
-            overscroll-behavior-y: none; /* Evita o 'bounce' no mobile */
         }
 
-        /* Estilo Nativo de Lista Agrupada */
-        .native-group {
-            background-color: var(--surface-color);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-        
-        .native-input-row {
-            display: flex;
-            align-items: center;
-            padding: 12px 16px;
-            border-bottom: 0.5px solid var(--border-color);
-            position: relative;
-        }
-        .native-input-row:last-child { border-bottom: none; }
-        
-        .native-icon {
-            width: 24px;
-            color: var(--text-muted);
-            margin-right: 12px;
-            font-size: 20px;
-        }
-
-        .native-input-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .native-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 2px;
-            letter-spacing: 0.5px;
-        }
-
-        .native-input {
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-            padding: 0;
-        }
-        .native-input::placeholder { color: #4e5d6d; }
-
-        /* Foco dinâmico no ícone */
-        .native-input-row:focus-within .native-icon { color: var(--primary-green); }
-
-        /* Botão Premium */
-        .btn-sticky-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 16px 20px 32px 20px; /* Padding extra para iPhone com Notch/Barra */
-            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 30%, #000000 100%);
-            z-index: 50;
-        }
-
-        .btn-premium {
-            width: 100%;
-            background-color: var(--primary-green);
-            color: white;
-            font-size: 17px;
-            font-weight: 600;
-            padding: 16px;
-            border-radius: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-premium:not(:disabled) {
-            box-shadow: 0 4px 24px rgba(0, 192, 112, 0.3);
-        }
-
-        .btn-premium:not(:disabled):active { transform: scale(0.97); }
-
-        .btn-premium:disabled {
-            background-color: #232e3a;
-            color: #5a6b7d;
-            cursor: not-allowed;
-        }
-
-        /* Correção de Autofill Safado do Webkit */
-        input:-webkit-autofill {
-            -webkit-box-shadow: 0 0 0 30px var(--surface-color) inset !important;
+        /* Fix para o preenchimento automático (autofill) não estragar o fundo do input */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #18181b inset !important;
             -webkit-text-fill-color: white !important;
-            border-radius: 0;
+            border-radius: 0.75rem;
         }
-
-        /* Animação Sucesso */
-        @keyframes popIn {
-            0% { transform: scale(0.5); opacity: 0; }
-            70% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-pop { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
 
-    <div id="app-container" class="w-full max-w-md mx-auto relative flex flex-col min-h-screen">
+    <div id="app-container" class="w-full max-w-md mx-auto relative flex flex-col min-h-screen justify-center">
         
-        <div id="form-screen" class="flex flex-col w-full flex-1 transition-opacity duration-300 pb-32">
-            
-            <div class="px-6 pt-10 pb-6 flex flex-col items-center text-center">
-                <div class="w-14 h-14 bg-gradient-to-br from-[#1c242d] to-[#12181e] border border-[#2d3744] rounded-2xl flex items-center justify-center shadow-lg mb-5 relative">
-                    <div class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-[#00c070] border-2 border-black rounded-full"></div>
-                    <i class="ph-fill ph-lock-key text-2xl text-white"></i>
+        <div id="form-screen" class="relative z-10 flex-1 flex flex-col transition-opacity duration-300">
+            <div class="flex-1 flex flex-col p-5">
+                
+                <div class="flex justify-center mb-6">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-sky-500/10 border border-sky-500/20 rounded-full">
+                        <div class="w-2 h-2 bg-sky-400 rounded-full animate-pulse"></div>
+                        <span class="text-sky-400 text-sm font-medium">Último passo</span>
+                    </div>
                 </div>
-                <h1 class="text-2xl font-bold mb-2 tracking-tight">Acesso Exclusivo</h1>
-                <p class="text-[15px] text-[#8e96a1] leading-relaxed">
-                    Complete seu cadastro abaixo para liberar o conteúdo instantaneamente.
-                </p>
-            </div>
-
-            <form id="access-form" class="px-4 w-full">
-                <div class="native-group shadow-md">
+                
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky-500/20 to-sky-600/20 rounded-2xl flex items-center justify-center border border-white/5">
+                        <svg class="w-8 h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h1 class="text-xl font-bold text-white mb-2">Garanta seu Acesso</h1>
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">Informe seus dados para liberar o conteúdo e receber atualizações exclusivas</p>
+                </div>
+                
+                <form id="access-form" class="flex-1 flex flex-col">
                     
-                    <div class="native-input-row">
-                        <i class="ph ph-envelope-simple native-icon transition-colors"></i>
-                        <div class="native-input-container">
-                            <label class="native-label">E-mail de acesso <span class="text-red-500">*</span></label>
-                            <input type="email" id="email" placeholder="seu@email.com" class="native-input" required autocomplete="email">
+                    <div class="mb-4">
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            Seu melhor email<span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative rounded-xl transition-all duration-200">
+                            <input id="email" required placeholder="seu@email.com" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="email" type="email">
                         </div>
                     </div>
-
-                    <div class="native-input-row">
-                        <i class="ph ph-device-mobile native-icon transition-colors"></i>
-                        <div class="native-input-container">
-                            <label class="native-label">Celular com DDD <span class="text-red-500">*</span></label>
-                            <input type="tel" id="phone" placeholder="(11) 99999-9999" class="native-input" required>
+                    
+                    <div class="mb-4">
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            Telefone<span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative rounded-xl transition-all duration-200">
+                            <input id="phone" required placeholder="(11) 99999-9999" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="tel" type="tel">
                         </div>
                     </div>
-
-                    <div class="native-input-row">
-                        <i class="ph ph-calendar-blank native-icon transition-colors"></i>
-                        <div class="native-input-container">
-                            <label class="native-label">Data de nascimento <span class="text-red-500">*</span></label>
-                            <input type="text" id="dob" placeholder="DD/MM/AAAA" class="native-input" required>
+                    
+                    <div class="mb-5">
+                        <label class="flex items-center gap-2 text-sm font-medium text-gray-300 mb-2">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Data de nascimento<span class="text-red-400">*</span>
+                        </label>
+                        <div class="relative rounded-xl transition-all duration-200">
+                            <input id="dob" required inputmode="numeric" placeholder="DD/MM/AAAA" maxlength="10" class="w-full px-4 py-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:bg-white/[0.07] focus:border-sky-500/50 transition-all" autocomplete="bday" type="text">
                         </div>
                     </div>
-
-                </div>
-            </form>
-
-            <div class="btn-sticky-container">
-                <button type="button" id="submit-btn" disabled class="btn-premium">
-                    Liberar Meu Acesso <i class="ph-bold ph-arrow-right"></i>
-                </button>
+                    
+                    <div class="mt-auto pt-4 pb-6">
+                        <button id="submit-btn" type="button" disabled class="w-full py-4 font-semibold rounded-xl flex items-center justify-center gap-2 transition-all duration-200 disabled:from-[#1f2937] disabled:to-[#1f2937] disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:transform-none bg-gradient-to-r from-sky-500 to-sky-600 text-white hover:from-sky-600 hover:to-sky-700 shadow-lg shadow-sky-500/20 active:scale-[0.98] cursor-pointer">
+                            <span>Liberar Acesso</span>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                        </button>
+                        
+                        <div class="flex items-center justify-center gap-1.5 mt-4 text-gray-500 text-xs">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            <span>Seus dados estão seguros</span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
 
-        <div id="success-screen" class="hidden flex-col items-center justify-center w-full flex-1 transition-opacity duration-300 px-6 absolute inset-0 z-50 bg-black">
+        <div id="success-screen" class="hidden flex-col items-center justify-center w-full min-h-[60vh] transition-opacity duration-300 px-5 absolute inset-0 z-50">
             
-            <div class="w-24 h-24 bg-[#00c070]/10 rounded-full flex items-center justify-center mb-6 animate-pop">
-                <div class="w-16 h-16 bg-[#00c070] rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(0,192,112,0.4)]">
-                    <i class="ph-bold ph-check text-3xl text-white"></i>
-                </div>
+            <div class="w-20 h-20 bg-sky-500 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(14,165,233,0.3)]">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
             </div>
             
-            <h1 class="text-2xl font-bold mb-3 text-center text-white">Tudo Pronto!</h1>
-            <p class="text-[#8e96a1] text-[15px] text-center mb-10">
-                Seu acesso foi verificado. Você já pode retornar para a conversa.
+            <h1 class="text-2xl font-bold mb-3 text-center text-white">Acesso Liberado!</h1>
+            <p class="text-gray-400 text-sm text-center mb-10">
+                Seu conteúdo está sendo enviado...
             </p>
 
-            <button id="close-btn" class="flex items-center justify-center gap-2 bg-[#1c242d] hover:bg-[#2d3744] text-white px-6 py-3.5 rounded-xl text-[15px] font-semibold transition-colors w-full max-w-[200px]">
-                Fechar App <span id="timer" class="text-[#8e96a1] ml-1">(5)</span>
+            <button id="close-btn" class="flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white px-6 py-3 rounded-xl text-sm font-medium transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                Fechar ( <span id="timer">5</span> )
             </button>
         </div>
 
     </div>
 
     <script>
-        // Inicializa API do Telegram
         const tg = window.Telegram.WebApp;
         tg.ready();
-        
-        // FORÇA O APP A ABRIR EM TELA CHEIA (Essencial para visual premium)
         tg.expand();
-        // Define a cor do header do app no Telegram para bater com o fundo
-        tg.setHeaderColor('#000000');
-        tg.setBackgroundColor('#000000');
+        tg.setHeaderColor('#09090b');
+        tg.setBackgroundColor('#09090b');
 
         const formScreen = document.getElementById('form-screen');
         const successScreen = document.getElementById('success-screen');
@@ -226,7 +129,6 @@
         const closeBtn = document.getElementById('close-btn');
         const timerDisplay = document.getElementById('timer');
 
-        // Máscaras e Validações
         phoneInput.addEventListener('input', function (e) {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
             e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
@@ -254,11 +156,7 @@
             }
         }
 
-        // Transição de Telas
         submitBtn.addEventListener('click', function() {
-            // Oculta container do botão sticky para não atrapalhar a tela de sucesso
-            document.querySelector('.btn-sticky-container').style.display = 'none';
-            
             formScreen.classList.add('opacity-0');
             
             setTimeout(() => {
@@ -273,12 +171,11 @@
             }, 300);
         });
 
-        // Fechamento e Contagem
         let countdown = 5;
         function iniciarContagem() {
             const interval = setInterval(() => {
                 countdown--;
-                timerDisplay.innerText = `(${countdown})`;
+                timerDisplay.innerText = countdown;
                 
                 if (countdown <= 0) {
                     clearInterval(interval);
