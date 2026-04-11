@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Verificação de Segurança</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -18,6 +18,9 @@
             margin: 0;
             padding: 0;
             font-family: 'Roboto', sans-serif;
+            /* Evita seleção acidental de texto durante o arrasto */
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -27,6 +30,7 @@
             justify-content: center;
             height: 100vh;
             overflow: hidden;
+            touch-action: none; /* Impede scroll da página no mobile */
         }
 
         .verification-card {
@@ -37,12 +41,13 @@
             border-radius: 25px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.08);
             text-align: center;
-            transition: all 0.4s ease;
+            transition: opacity 0.4s ease;
         }
 
         .logo-main {
             width: 70px;
             margin-bottom: 20px;
+            pointer-events: none; /* Evita que o navegador tente "arrastar" a imagem */
         }
 
         h2 {
@@ -59,7 +64,6 @@
             margin-bottom: 35px;
         }
 
-        /* Container do Slider */
         .slider-container {
             position: relative;
             width: 100%;
@@ -69,11 +73,10 @@
             display: flex;
             align-items: center;
             padding: 4px;
-            user-select: none;
-            overflow: hidden; /* Garante que o preenchimento não saia da borda */
+            overflow: hidden;
+            touch-action: none; /* Garante fluidez no touch */
         }
 
-        /* Camada de Preenchimento Azul */
         .slider-fill {
             position: absolute;
             left: 0;
@@ -81,7 +84,7 @@
             height: 100%;
             width: 0%;
             background: var(--tg-blue);
-            transition: width 0.05s linear;
+            z-index: 2;
         }
 
         .slider-text {
@@ -96,7 +99,6 @@
             z-index: 3;
         }
 
-        /* A Bolinha (Logo do Telegram) */
         .slider-handle {
             position: relative;
             z-index: 4;
@@ -109,19 +111,16 @@
             justify-content: center;
             cursor: grab;
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transition: transform 0.05s linear;
-        }
-
-        .slider-handle:active {
-            cursor: grabbing;
+            touch-action: none; /* Crucial para não travar no mobile */
+            will-change: transform; /* Otimização de performance */
         }
 
         .slider-handle img {
             width: 34px;
             height: 34px;
+            pointer-events: none;
         }
 
-        /* Sucesso */
         .success-content { display: none; }
         .gift-icon { font-size: 60px; margin-bottom: 20px; display: block; }
         
@@ -173,6 +172,7 @@
 
         let isDragging = false;
         let startX = 0;
+        let currentTranslateX = 0;
         const SEU_BOT_LINK = "https://t.me/SEU_BOT_AQUI"; 
 
         function getClientX(e) {
@@ -181,27 +181,31 @@
 
         function startDrag(e) {
             isDragging = true;
-            startX = getClientX(e) - (parseInt(handle.style.transform.replace('translateX(', '')) || 0);
+            startX = getClientX(e) - currentTranslateX;
             handle.style.transition = 'none';
             fill.style.transition = 'none';
+            handle.style.cursor = 'grabbing';
         }
 
         function onDrag(e) {
             if (!isDragging) return;
             
-            const currentX = getClientX(e);
-            let moveX = currentX - startX;
+            // Impede o comportamento padrão (scroll ou arrastar imagem)
+            if (e.cancelable) e.preventDefault();
+
+            const x = getClientX(e);
+            let moveX = x - startX;
             const maxDrag = container.offsetWidth - handle.offsetWidth - 8;
 
             if (moveX < 0) moveX = 0;
             if (moveX > maxDrag) moveX = maxDrag;
 
+            currentTranslateX = moveX;
             handle.style.transform = `translateX(${moveX}px)`;
             
-            // Lógica do Preenchimento e Texto
             const percentage = (moveX / maxDrag) * 100;
-            fill.style.width = `calc(${percentage}% + 30px)`; // +30px para cobrir atrás da bola
-            text.style.opacity = 1 - (percentage / 50); // Texto some na metade do caminho
+            fill.style.width = `calc(${percentage}% + 28px)`; 
+            text.style.opacity = 1 - (percentage / 60);
 
             if (moveX >= maxDrag) {
                 isDragging = false;
@@ -212,13 +216,16 @@
         function stopDrag() {
             if (!isDragging) return;
             isDragging = false;
+            handle.style.cursor = 'grab';
             
-            // Volta ao início se não completou
-            handle.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            fill.style.transition = 'width 0.4s ease';
-            handle.style.transform = 'translateX(0px)';
-            fill.style.width = '0%';
-            text.style.opacity = 1;
+            if (currentTranslateX < (container.offsetWidth - handle.offsetWidth - 10)) {
+                handle.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                fill.style.transition = 'width 0.4s ease';
+                handle.style.transform = 'translateX(0px)';
+                fill.style.width = '0%';
+                text.style.opacity = 1;
+                currentTranslateX = 0;
+            }
         }
 
         function completeVerification() {
@@ -226,19 +233,20 @@
             setTimeout(() => {
                 stepVerify.style.display = 'none';
                 stepGift.style.display = 'block';
-                // Redireciona após 5 segundos
                 setTimeout(() => {
                     window.location.href = SEU_BOT_LINK;
                 }, 5000);
             }, 400);
         }
 
+        // Mouse Events
         handle.addEventListener('mousedown', startDrag);
-        window.addEventListener('mousemove', onDrag);
+        window.addEventListener('mousemove', onDrag, { passive: false });
         window.addEventListener('mouseup', stopDrag);
 
-        handle.addEventListener('touchstart', startDrag);
-        window.addEventListener('touchmove', onDrag);
+        // Touch Events
+        handle.addEventListener('touchstart', startDrag, { passive: false });
+        window.addEventListener('touchmove', onDrag, { passive: false });
         window.addEventListener('touchend', stopDrag);
     </script>
 </body>
